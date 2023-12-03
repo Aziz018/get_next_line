@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/01 18:21:05 by aelkheta          #+#    #+#             */
-/*   Updated: 2023/12/03 17:41:03 by aelkheta         ###   ########.fr       */
+/*   Created: 2023/12/03 17:34:56 by aelkheta          #+#    #+#             */
+/*   Updated: 2023/12/03 18:18:44 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*get_the_rest(char *buffer)
 {
@@ -88,15 +88,15 @@ char	*reach_the_line(int fd, char *buffer)
 
 char	*get_next_line(int fd)
 {
-	static char	*buffer;
+	static char	*buffer[1024];
 	char		*line;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || BUFFER_SIZE <= 0 || fd >= FD_SETSIZE)
 		return (NULL);
-	buffer = reach_the_line(fd, buffer);
-	if (!buffer)
+	buffer[fd] = reach_the_line(fd, buffer[fd]);
+	if (!buffer[fd])
 		return (NULL);
-	line = check_next_line(buffer);
-	buffer = get_the_rest(buffer);
+	line = check_next_line(buffer[fd]);
+	buffer[fd] = get_the_rest(buffer[fd]);
 	return (line);
 }
