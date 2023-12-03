@@ -6,7 +6,7 @@
 #    By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/03 10:32:06 by aelkheta          #+#    #+#              #
-#    Updated: 2023/12/03 10:32:07 by aelkheta         ###   ########.fr        #
+#    Updated: 2023/12/03 11:41:26 by aelkheta         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ char *get_the_rest(char *buffer)
     the_rest = (char *)malloc(sizeof(char) * (len + 1));
     if (!the_rest)
         return NULL;
-    ft_strlcpy(the_rest, &buffer[j], len + 1); // +1 for the null terminator
+    ft_strlcpy(the_rest, &buffer[j], len + 1);
     return the_rest;
 }
 
@@ -61,7 +61,7 @@ char *reach_the_line(int fd, ssize_t *bytes_read, char *line, char *buffer)
     }
     line[*bytes_read] = '\0';
     char *new_buffer = ft_strjoin(buffer, line);
-    free(buffer); // Free the old buffer
+    free(buffer);
     return new_buffer;
 }
 

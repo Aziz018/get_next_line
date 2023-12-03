@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 18:21:14 by aelkheta          #+#    #+#             */
-/*   Updated: 2023/12/03 10:59:01 by aelkheta         ###   ########.fr       */
+/*   Updated: 2023/12/03 11:40:52 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ char	*ft_strchr(const char *str, int c)
 	size_t	i;
 
 	i = 0;
+	if (!str)
+		return (NULL);
 	while (str[i] != '\0')
 	{
 		if (str[i] == (char)c)
@@ -84,16 +86,8 @@ char	*ft_strjoin(char *s1, char *s2)
 	ptr = (char *)malloc((len_s1 + len_s2 + 1) * sizeof(char));
 	if (!ptr)
 		return (NULL);
-	while (len_s1--)
-	{
-		ptr[i++] = *s1;
-		s1++;
-	}
-	while (len_s2--)
-	{
-		ptr[i++] = *s2;
-		s2++;
-	}
-	ptr[i] = '\0';
-	return (ptr);
+	ft_strlcpy(ptr, s1, len_s1 + 1);
+	ft_strlcpy((ptr + len_s1), s2, (len_s2 + 1));
+	free(s1);
+	return ptr;
 }

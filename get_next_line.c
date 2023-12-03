@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 18:21:05 by aelkheta          #+#    #+#             */
-/*   Updated: 2023/12/03 10:58:15 by aelkheta         ###   ########.fr       */
+/*   Updated: 2023/12/03 13:22:31 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ char *get_the_rest(char *buffer)
     if (!the_rest)
         return NULL;
     ft_strlcpy(the_rest, &buffer[j], len + 1);
+    free(buffer);
     return the_rest;
 }
 
@@ -61,7 +62,8 @@ char *reach_the_line(int fd, ssize_t *bytes_read, char *line, char *buffer)
         free(line);
         return NULL;
     }
-
+    if(*bytes_read == 0)
+        return NULL;
     line[*bytes_read] = '\0';
     buffer = ft_strjoin(buffer, line);
     return buffer;
@@ -76,11 +78,15 @@ char    *get_next_line(int fd)
     
     get_line = (char *)malloc(sizeof(char) * BUFFER_SIZE + 1);
     bytes_read = 1;
+    get_line[0] = '\0';
     while (bytes_read > 0 && !ft_strchr(get_line, '\n'))
     {
         buffer = reach_the_line(fd, &bytes_read, get_line, buffer);
-        if(!buffer || bytes_read == 0)
+        if(!buffer)
+        {
+            free(get_line);
             return NULL;
+        }
     }
     next = check_next_line(buffer);
     buffer = get_the_rest(buffer);
@@ -90,7 +96,7 @@ char    *get_next_line(int fd)
 
 int main()
 {
-    int fd = open("txt.txt", O_RDONLY);
+    int fd = open("get_next_line.c", O_RDONLY);
     if (fd < 0)
         return 1;
 
