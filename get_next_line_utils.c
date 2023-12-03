@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 18:21:14 by aelkheta          #+#    #+#             */
-/*   Updated: 2023/12/02 11:51:58 by aelkheta         ###   ########.fr       */
+/*   Updated: 2023/12/03 10:59:01 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,26 @@ size_t	ft_strlen(const char *str)
 	return (i);
 }
 
+size_t	ft_strlcpy(char *dst, const char *src, size_t size)
+{
+	char	*dest;
+	char	*str;
+	size_t	i;
+
+	i = 0;
+	dest = (char *)dst;
+	str = (char *)src;
+	if (size > 0)
+	{
+		while (str[i] && i < size - 1)
+		{
+			dest[i] = str[i];
+			i++;
+		}
+		dest[i] = '\0';
+	}
+	return (ft_strlen(src));
+}
 
 char	*ft_strchr(const char *str, int c)
 {
