@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 18:21:05 by aelkheta          #+#    #+#             */
-/*   Updated: 2023/12/03 17:41:03 by aelkheta         ###   ########.fr       */
+/*   Updated: 2023/12/05 08:24:04 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 char	*get_the_rest(char *buffer)
 {
-	size_t	i;
-	size_t	j;
+	int		i;
+	int		j;
 	size_t	len;
 	char	*the_rest;
 
@@ -24,10 +24,10 @@ char	*get_the_rest(char *buffer)
 	len = 0;
 	while (buffer[i] && buffer[i] != '\n')
 		i++;
-	++i;
-	while (buffer[i + len] && buffer[i + len] != '\0')
-		len++;
-	the_rest = (char *)malloc(sizeof(char) * (len + 1));
+	if (buffer[i] == '\n')
+		i++;
+	len = ft_strlen(&buffer[i]) + 1;
+	the_rest = (char *)malloc(sizeof(char) * len);
 	if (!the_rest)
 		return (NULL);
 	while (buffer[i])
@@ -40,8 +40,8 @@ char	*get_the_rest(char *buffer)
 char	*check_next_line(char *buffer)
 {
 	int		i;
+	int		len;
 	char	*i_am_the_line;
-	ssize_t	len;
 
 	i = 0;
 	len = 0;
@@ -52,28 +52,28 @@ char	*check_next_line(char *buffer)
 	i_am_the_line = (char *)malloc(sizeof(char) * len + 2);
 	if (!i_am_the_line)
 		return (NULL);
-	i = 0;
-	while (buffer[i] != '\n')
+	while (buffer[i] && buffer[i] != '\n')
 	{
 		i_am_the_line[i] = buffer[i];
 		i++;
 	}
-	i_am_the_line[i] = '\n';
-	i_am_the_line[++i] = '\0';
+	if (buffer[i] == '\n')
+		i_am_the_line[i++] = '\n';
+	i_am_the_line[i] = '\0';
 	return (i_am_the_line);
 }
 
 char	*reach_the_line(int fd, char *buffer)
 {
 	char	*line;
-	ssize_t	bytes_read;
+	int		bytes_read;
 
 	line = malloc(sizeof(char) * BUFFER_SIZE + 1);
 	bytes_read = 1;
 	while (bytes_read > 0 && !ft_strchr(buffer, '\n'))
 	{
 		bytes_read = read(fd, line, BUFFER_SIZE);
-		if (bytes_read <= 0)
+		if (bytes_read < 0)
 		{
 			free(line);
 			free(buffer);
@@ -98,5 +98,10 @@ char	*get_next_line(int fd)
 		return (NULL);
 	line = check_next_line(buffer);
 	buffer = get_the_rest(buffer);
+	if (line[0] == '\0')
+	{
+		free(line);
+		return (NULL);
+	}
 	return (line);
 }

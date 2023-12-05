@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 18:21:14 by aelkheta          #+#    #+#             */
-/*   Updated: 2023/12/03 16:27:58 by aelkheta         ###   ########.fr       */
+/*   Updated: 2023/12/04 13:49:54 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,22 +43,22 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 	return (ft_strlen(src));
 }
 
-char	*ft_strchr(char *s, int c)
+char	*ft_strchr(const char *str, int c)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
-	if (!s)
-		return (0);
-	if (c == '\0')
-		return ((char *)&s[ft_strlen(s)]);
-	while (s[i] != '\0')
+	if (!str)
+		return (NULL);
+	while (str[i])
 	{
-		if (s[i] == (char)c)
-			return ((char *)&s[i]);
+		if (str[i] == (char)c)
+			return ((char *)&str[i]);
 		i++;
 	}
-	return (0);
+	if (c == '\0')
+		return ((char *)&str[i]);
+	return (NULL);
 }
 
 char	*ft_strjoin(char *s1, char *s2)
@@ -71,7 +71,7 @@ char	*ft_strjoin(char *s1, char *s2)
 		return (NULL);
 	if (!s1)
 	{
-		s1 = (char *)malloc(1);
+		s1 = (char *)malloc(sizeof(char));
 		if (!s1)
 			return (NULL);
 		s1[0] = '\0';
