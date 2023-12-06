@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 18:21:05 by aelkheta          #+#    #+#             */
-/*   Updated: 2023/12/05 08:24:04 by aelkheta         ###   ########.fr       */
+/*   Updated: 2023/12/06 17:19:36 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,25 +16,26 @@ char	*get_the_rest(char *buffer)
 {
 	int		i;
 	int		j;
-	size_t	len;
-	char	*the_rest;
+	char	*str;
 
 	i = 0;
-	j = 0;
-	len = 0;
 	while (buffer[i] && buffer[i] != '\n')
 		i++;
-	if (buffer[i] == '\n')
-		i++;
-	len = ft_strlen(&buffer[i]) + 1;
-	the_rest = (char *)malloc(sizeof(char) * len);
-	if (!the_rest)
+	if (!buffer[i])
+	{
+		free(buffer);
 		return (NULL);
+	}
+	str = (char *)malloc(sizeof(char) * (ft_strlen(buffer) - i + 1));
+	if (!str)
+		return (NULL);
+	i++;
+	j = 0;
 	while (buffer[i])
-		the_rest[j++] = buffer[i++];
-	the_rest[j] = '\0';
+		str[j++] = buffer[i++];
+	str[j] = '\0';
 	free(buffer);
-	return (the_rest);
+	return (str);
 }
 
 char	*check_next_line(char *buffer)
@@ -105,3 +106,21 @@ char	*get_next_line(int fd)
 	}
 	return (line);
 }
+// int	main(void)
+// {
+// 	int		fd;
+// 	char	*next_line;
+
+// 	fd = open("README.md", O_RDONLY);
+// 	if (fd < 0)
+// 		return (1);
+// 	next_line = get_next_line(fd);
+// 	while (next_line != NULL)
+// 	{
+// 		printf("%s", next_line);
+// 		free(next_line);
+// 		next_line = get_next_line(fd);
+// 	}
+// 	close(fd);
+// 	return (0);
+// }
