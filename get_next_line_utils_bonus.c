@@ -6,11 +6,17 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 17:37:27 by aelkheta          #+#    #+#             */
-/*   Updated: 2023/12/03 18:10:27 by aelkheta         ###   ########.fr       */
+/*   Updated: 2023/12/08 16:19:28 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
+
+char	*ft_free(char *buffer)
+{
+	free(buffer);
+	return (NULL);
+}
 
 size_t	ft_strlen(const char *str)
 {
@@ -43,7 +49,7 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 	return (ft_strlen(src));
 }
 
-char	*ft_strchr(char *s, int c)
+char	*ft_strchr(const char *s, int c)
 {
 	int	i;
 

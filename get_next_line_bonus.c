@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 17:34:56 by aelkheta          #+#    #+#             */
-/*   Updated: 2023/12/05 08:16:19 by aelkheta         ###   ########.fr       */
+/*   Updated: 2023/12/08 16:57:01 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,10 @@ char	*get_the_rest(char *buffer)
 	while (buffer[i] && buffer[i] != '\n')
 		i++;
 	if (!buffer[i])
-	{
-		free(buffer);
-		return (NULL);
-	}
+		return (ft_free(buffer));
 	str = (char *)malloc(sizeof(char) * (ft_strlen(buffer) - i + 1));
 	if (!str)
-		return (NULL);
+		return (ft_free(buffer));
 	i++;
 	j = 0;
 	while (buffer[i])
@@ -70,6 +67,8 @@ char	*reach_the_line(int fd, char *buffer)
 	int		bytes_read;
 
 	line = malloc(sizeof(char) * BUFFER_SIZE + 1);
+	if (!line)
+		return (NULL);
 	bytes_read = 1;
 	while (bytes_read > 0 && !ft_strchr(buffer, '\n'))
 	{
@@ -82,6 +81,8 @@ char	*reach_the_line(int fd, char *buffer)
 		}
 		line[bytes_read] = '\0';
 		buffer = ft_strjoin(buffer, line);
+		if (!buffer)
+			return (NULL);
 	}
 	free(line);
 	return (buffer);
@@ -89,10 +90,10 @@ char	*reach_the_line(int fd, char *buffer)
 
 char	*get_next_line(int fd)
 {
-	static char	*buffer[1024];
 	char		*line;
+	static char	*buffer[FD_SETSIZE];
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || fd >= 1024)
+	if (fd < 0 || BUFFER_SIZE <= 0 || fd >= FD_SETSIZE)
 		return (NULL);
 	buffer[fd] = reach_the_line(fd, buffer[fd]);
 	if (!buffer[fd])

@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 18:21:05 by aelkheta          #+#    #+#             */
-/*   Updated: 2023/12/06 17:19:36 by aelkheta         ###   ########.fr       */
+/*   Updated: 2023/12/08 17:14:14 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,10 @@ char	*get_the_rest(char *buffer)
 	while (buffer[i] && buffer[i] != '\n')
 		i++;
 	if (!buffer[i])
-	{
-		free(buffer);
-		return (NULL);
-	}
+		return (ft_free(buffer));
 	str = (char *)malloc(sizeof(char) * (ft_strlen(buffer) - i + 1));
 	if (!str)
-		return (NULL);
+		return (ft_free(buffer));
 	i++;
 	j = 0;
 	while (buffer[i])
@@ -70,6 +67,8 @@ char	*reach_the_line(int fd, char *buffer)
 	int		bytes_read;
 
 	line = malloc(sizeof(char) * BUFFER_SIZE + 1);
+	if (!line)
+		return (NULL);
 	bytes_read = 1;
 	while (bytes_read > 0 && !ft_strchr(buffer, '\n'))
 	{
@@ -82,6 +81,8 @@ char	*reach_the_line(int fd, char *buffer)
 		}
 		line[bytes_read] = '\0';
 		buffer = ft_strjoin(buffer, line);
+		if (!buffer)
+			return (NULL);
 	}
 	free(line);
 	return (buffer);
@@ -89,8 +90,8 @@ char	*reach_the_line(int fd, char *buffer)
 
 char	*get_next_line(int fd)
 {
-	static char	*buffer;
 	char		*line;
+	static char	*buffer;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
@@ -106,21 +107,3 @@ char	*get_next_line(int fd)
 	}
 	return (line);
 }
-// int	main(void)
-// {
-// 	int		fd;
-// 	char	*next_line;
-
-// 	fd = open("README.md", O_RDONLY);
-// 	if (fd < 0)
-// 		return (1);
-// 	next_line = get_next_line(fd);
-// 	while (next_line != NULL)
-// 	{
-// 		printf("%s", next_line);
-// 		free(next_line);
-// 		next_line = get_next_line(fd);
-// 	}
-// 	close(fd);
-// 	return (0);
-// }

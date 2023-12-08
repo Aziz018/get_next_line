@@ -6,11 +6,17 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 18:21:14 by aelkheta          #+#    #+#             */
-/*   Updated: 2023/12/04 13:49:54 by aelkheta         ###   ########.fr       */
+/*   Updated: 2023/12/08 16:13:40 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+char	*ft_free(char *buffer)
+{
+	free(buffer);
+	return (NULL);
+}
 
 size_t	ft_strlen(const char *str)
 {
@@ -80,7 +86,7 @@ char	*ft_strjoin(char *s1, char *s2)
 	len_s2 = ft_strlen(s2);
 	ptr = (char *)malloc((len_s1 + len_s2 + 1) * sizeof(char));
 	if (!ptr)
-		return (NULL);
+		return (ft_free(s1));
 	ft_strlcpy(ptr, s1, len_s1 + 1);
 	ft_strlcpy((ptr + len_s1), s2, (len_s2 + 1));
 	free(s1);
